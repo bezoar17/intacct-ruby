@@ -9,6 +9,7 @@ module IntacctRuby
       readByQuery
       read
       readByName
+      readMore
       create
       update
       delete
@@ -30,7 +31,8 @@ module IntacctRuby
       xml.function controlid: controlid do
         xml.tag!(@function_type) do
           if CU_TYPES.exclude?(@function_type)
-            xml << argument_xml(@arguments, to_case: :downcase)
+            enforced_case = @function_type == "readMore" ? nil : :downcase
+            xml << argument_xml(@arguments, to_case: enforced_case)
           else
             xml.tag!(@object_type.upcase) do
               xml << argument_xml(@arguments)
